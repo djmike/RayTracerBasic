@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\raytracer">
+      <UniqueIdentifier>{81875898-16cb-4305-8e84-c8cc622cc4e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\raytracer">
+      <UniqueIdentifier>{11bf4c22-89f3-4bbc-b8aa-c0648217eb1e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\RayTracerBasicApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RayTracerBasicApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClInclude Include="..\include\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClCompile Include="..\src\raytracer\Camera.cpp">
+      <Filter>Source Files\raytracer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\raytracer\RayTracer.cpp">
+      <Filter>Source Files\raytracer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\raytracer\Scene.cpp">
+      <Filter>Source Files\raytracer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\raytracer\Sphere.cpp">
+      <Filter>Source Files\raytracer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\raytracer\Triangle.cpp">
+      <Filter>Source Files\raytracer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\raytracer\TriangleMesh.cpp">
+      <Filter>Source Files\raytracer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\raytracer\Camera.h">
+      <Filter>Header Files\raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\raytracer\Light.h">
+      <Filter>Header Files\raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\raytracer\Material.h">
+      <Filter>Header Files\raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\raytracer\Primitive.h">
+      <Filter>Header Files\raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\raytracer\Ray.h">
+      <Filter>Header Files\raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\raytracer\RayTracer.h">
+      <Filter>Header Files\raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\raytracer\Scene.h">
+      <Filter>Header Files\raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\raytracer\Sphere.h">
+      <Filter>Header Files\raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\raytracer\Triangle.h">
+      <Filter>Header Files\raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\raytracer\TriangleMesh.h">
+      <Filter>Header Files\raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
