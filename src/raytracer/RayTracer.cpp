@@ -5,7 +5,12 @@
 
 namespace raytracer {
 
-bool RayTracer::tryGetImage( ci::Surface& p_outImage ) const
+void RayTracer::getImageClone( ci::Surface& p_outImage ) const
+{
+	p_outImage	= m_image.clone();
+}
+
+bool RayTracer::getImageCloneThreadSafe( ci::Surface& p_outImage ) const
 {
 	bool isCloned = false;
 	//std::unique_lock< std::mutex > lock( m_imageMutex );
@@ -106,12 +111,13 @@ void RayTracer::render( const Scene& p_scene )
 	double endTime = ci::app::getElapsedSeconds();
 	double totalTime = endTime - startTime;
 
-	ci::fs::path outputFile = p_scene.getOutputFile();
-	ci::writeImage( outputFile, m_image, ci::ImageTarget::Options().quality( 1.0f ) );
+	//ci::fs::path outputFile = p_scene.getOutputFile();
+	//ci::writeImage( outputFile, m_image, ci::ImageTarget::Options().quality( 1.0f ) );
 	
 	m_isRendering	= false;
 
-	Logger::log() << "Render Complete!\n\tFile saved to: " << outputFile << "\n\tduration (seconds): " << totalTime << std::endl;
+	//Logger::log() << "Render Complete!\n\tFile saved to: " << outputFile << "\n\tduration (seconds): " << totalTime << std::endl;
+	Logger::log() << "Render Complete!\n\tduration (seconds): " << totalTime << std::endl;
 
 	/*ci::fs::path saveFilePath = ci::app::getSaveFilePath( outputFile );
 

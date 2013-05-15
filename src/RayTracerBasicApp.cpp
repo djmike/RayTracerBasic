@@ -3,6 +3,7 @@
 #include "cinder/gl/Texture.h"
 #include "cinder/ip/Fill.h"
 #include "cinder/params/Params.h"
+#include "cinder/ImageIo.h"
 #include "cinder/ObjLoader.h"
 #include "cinder/System.h"
 #include "cinder/Utilities.h"
@@ -31,7 +32,9 @@ public:
 	void update();
 
 	void loadSceneFile();
+	void reloadSceneFile();
 	void renderScene();
+	void saveRenderedImage();
 
 	void onWindowDraw();
 	void onWindowResize();
@@ -43,7 +46,9 @@ public:
 	void onWindowMouseWheel( MouseEvent& p_evt );
 
 	void onGuiLoadSceneFile();
+	void onGuiReloadSceneFile();
 	void onGuiRenderScene();
+	void onGuiSaveRenderedImage();
 
 private:
 	fs::path			m_sceneFilePath;
@@ -72,6 +77,7 @@ void RayTracerBasicApp::setup()
 {
 	setupWindow();
 	setupGuiMain();
+	setupRenderImageView();
 
 	console() << "Num threads: " << thread::hardware_concurrency() << endl;
 	console() << "Cinder System Num Cores/Threads: " << System::getNumCores() << ", Num CPUs: " << System::getNumCpus() << endl;
@@ -92,9 +98,10 @@ void RayTracerBasicApp::setupGuiMain()
 
 	m_guiMain->addParam( "Scene File", &m_sceneFileName, "group='Scene Management'", true );
 	m_guiMain->addButton( "Load Scene File", std::bind( &RayTracerBasicApp::onGuiLoadSceneFile, this ), "group='Scene Management'" );
+	m_guiMain->addButton( "Reload Scene File", std::bind( &RayTracerBasicApp::onGuiReloadSceneFile, this ), "group='Scene Management'" );
 	m_guiMain->addButton( "Render", std::bind( &RayTracerBasicApp::onGuiRenderScene, this ), "group='Scene Management'" );
+	m_guiMain->addButton( "Save Image", std::bind( &RayTracerBasicApp::onGuiSaveRenderedImage, this ), "group='Scene Management'" );
 
-	// TODO: add a button for saving the image to disk
 	// TODO: add elements for rendering progress
 	// TODO: add elements for displaying pixel info when mouse is over renderer image pixels
 }
@@ -113,6 +120,15 @@ void RayTracerBasicApp::loadSceneFile()
 	}
 }
 
+void RayTracerBasicApp::reloadSceneFile()
+{
+	if ( !m_sceneFilePath.empty() )
+	{
+		m_scene.clear();
+		m_scene.parseSceneFile( m_sceneFilePath.string() );
+	}
+}
+
 void RayTracerBasicApp::renderScene()
 {
 	if ( !m_sceneFilePath.empty() )
@@ -123,7 +139,7 @@ void RayTracerBasicApp::renderScene()
 		m_scene.setOutputFilePath( getAssetPath( "" ) );
 		m_rayTracer.render( m_scene );
 
-		m_rayTracer.tryGetImage( m_renderedImage );
+		m_rayTracer.getImageCloneThreadSafe( m_renderedImage );
 		m_renderedImageTex			= gl::Texture::create( m_renderedImage );
 
 		/*rt::Scene scene;
@@ -166,12 +182,20 @@ void RayTracerBasicApp::renderScene()
 	}
 }
 
+void RayTracerBasicApp::saveRenderedImage()
+{
+	fs::path saveFilePath	= getSaveFilePath( getAssetPath( "" ) );
+
+	if ( !saveFilePath.empty() )
+	{
+		writeImage( saveFilePath, m_renderedImage, ImageTarget::Options().quality( 1.0f ) );
+		cout << "Rendered Image Save to: " << saveFilePath << endl;
+	}
+}
+
 void RayTracerBasicApp::update()
 {
-	//if ( m_rayTracer.getIsRendering() && m_rayTracer.tryGetImage( m_renderedImage ) )
-	{
-		//m_renderedImageTex->update( m_renderedImage );
-	}
+	
 }
 
 void RayTracerBasicApp::setupWindow()
@@ -240,9 +264,19 @@ void RayTracerBasicApp::onGuiLoadSceneFile()
 	loadSceneFile();
 }
 
+void RayTracerBasicApp::onGuiReloadSceneFile()
+{
+	reloadSceneFile();
+}
+
 void RayTracerBasicApp::onGuiRenderScene()
 {
 	renderScene();
+}
+
+void RayTracerBasicApp::onGuiSaveRenderedImage()
+{
+	saveRenderedImage();
 }
 
 CINDER_APP_NATIVE( RayTracerBasicApp, RendererGl )

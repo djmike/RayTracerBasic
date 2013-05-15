@@ -23,7 +23,8 @@ public:
 	void	setMaxDepth( uint8_t p_maxDepth ) { m_maxDepth = p_maxDepth; }
 
 	bool	getIsRendering() const { return m_isRendering; }
-	bool	tryGetImage( ci::Surface& p_outImage ) const;
+	bool	getImageCloneThreadSafe( ci::Surface& p_outImage ) const;
+	void	getImageClone( ci::Surface& p_outImage ) const;
 
 protected:
 	bool			m_isRendering;

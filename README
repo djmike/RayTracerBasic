@@ -1,3 +1,75 @@
-RayTracerBasic
+RayTracerBasic is a basic implementation of a ray tracer that uses a rudimentary scene description file to render an image of a scene. Example scene description files are included in the "assets/scenes" folder, and an explanation of the scene description file format is included below. To use the application without needing to build it from the source code, follow the usage instructions outlined below. To build the application from source, use the provided Visual Studio 2012 project. There are no special steps or requirements for building the application.
 
-A basic recursive ray tracer implementation.
+Usage Instructions
+- Run the application executable "RayTracerBasic.exe" from the "app" folder.
+- Load a scene to be rendered by clicking the "Load Scene File" button and opening a scene description file from disk.
+- Click "Render". A rendered image of the scene should be displayed in the window when the render is complete.
+- Click "Save Image" to save the file to disk.
+
+Scene Description File Format
+A scene description file is made up of lines containing commands and command parameters. Lines prefixed with a '#' are comments and are therefore ignored. Blank lines are also ignored. A description of the commands and their parameters follows:
+
+size width height
+The size command determines the size of the rendered image.
+
+maxdepth depth
+The maxdepth command determines the max level of recursion. Defaults to 5 if this command is not specified.
+
+output filename
+The output command determines the filename of the rendered image. Because the "Save" button opens a "Save File" dialog where the user chooses their own filename, this command is essentially ignored.
+
+camera px py pz tx ty tz ux uy uz fov
+The camera command setups up the camera for the scene. The first 3 parameters make up the camera's 3-D (x, y, z) position in the world. The next 3 parameters make up the 3-D position (x, y, z) in the world that the camera is looking at. The next 3 parameters make up the world up vector (x, y, z). The last parameter is the camera's Y-axis field of view.
+
+sphere x y z radius
+The sphere command defines a sphere with the center of the sphere positioned at the specified 3-D location (x, y, z). Radius defines the radius of the sphere.
+
+maxverts number
+The maxverts command is a convenience command that is not utilized in this implementation and can therefore be unspecified.
+
+vertex x y z
+The vertex command defines a vertex at the 3-D location specified by x, y, z. The vertices are stored in order starting with the index of 0. This command is used in conjunction with the tri command.
+
+tri v1 v2 v3
+The tri command defines a triangle with the vertices reference by v1, v2, and v3. The vertices are assumed to be in counter-clockwise order.
+
+translate x y z
+The translate command defines a translation vector.
+
+rotate x y z angle
+The rotate command defines a rotation about an axis defined by x, y, z by an angle in degrees specified by angle.
+
+scale x y z
+The scale command defines a scale transformation with x, y, z corresponding to the amount of scale on that respective axis.
+
+pushTransform
+The pushTransform command emulates the matrix stack in OpenGL. Tranformation commands (translate, scale, rotate) that are specified in between a pushTransform and a popTransform will be applied to the transformation matrix. The transformation matrix will be applied to each object as they are defined. So if a transformation command is specified after an object is defined, that transformation command will only apply to objects defined after it.
+
+popTransform
+The popTransform command emulates the matrix stack in OpenGL. Tranformation commands (translate, scale, rotate) that are specified in between a pushTransform and a popTransform will be applied to the transformation matrix. The transformation matrix will be applied to each object as they are defined. So if a transformation command is specified after an object is defined, that transformation command will only apply to objects defined after it.
+
+directional x y z r g b
+Defines a directional light positioned in the world at x, y, z with a color r, g, b
+
+point x y z r g b
+Defines a point light positioned in the world at x, y, z with a color r, g, b
+
+attenuation constant linear quadratic
+Defines the attenuation for all lights in the scene.
+
+ambient r g b
+Ambient color applied to each object following the command.
+
+diffuse r g b
+Diffuse color applied to each object following the command.
+
+specular r g b
+Diffuse color applied to each object following the command.
+
+emission r g b
+Emission color applied to each object following the command.
+
+shininess s
+Defines the shininess of the surface and determines the size of the specular highlight. The larger the shininess factor, the smaller the highlight.
+
+This project makes use of Cinder, an open source library for creative coding in C++. Learn more about Cinder at http://libcinder.org/.
