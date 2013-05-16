@@ -59,6 +59,7 @@ private:
 	rt::RayTracer		m_rayTracer;
 	Surface				m_renderedImage;
 	gl::TextureRef		m_renderedImageTex;
+	bool				m_useMultithreading;
 };
 
 void RayTracerBasicApp::prepareSettings( Settings* p_settings )
@@ -75,6 +76,10 @@ void RayTracerBasicApp::prepareSettings( Settings* p_settings )
 
 void RayTracerBasicApp::setup()
 {
+	console().sync_with_stdio( true );
+
+	m_useMultithreading		= false;
+
 	setupWindow();
 	setupGuiMain();
 	setupRenderImageView();
@@ -100,6 +105,7 @@ void RayTracerBasicApp::setupGuiMain()
 	m_guiMain->addButton( "Load Scene File", std::bind( &RayTracerBasicApp::onGuiLoadSceneFile, this ), "group='Scene Management'" );
 	m_guiMain->addButton( "Reload Scene File", std::bind( &RayTracerBasicApp::onGuiReloadSceneFile, this ), "group='Scene Management'" );
 	m_guiMain->addButton( "Render", std::bind( &RayTracerBasicApp::onGuiRenderScene, this ), "group='Scene Management'" );
+	m_guiMain->addParam( "Use Multithreading", &m_useMultithreading, "group='Scene Management'" );
 	m_guiMain->addButton( "Save Image", std::bind( &RayTracerBasicApp::onGuiSaveRenderedImage, this ), "group='Scene Management'" );
 
 	// TODO: add elements for rendering progress
@@ -133,21 +139,21 @@ void RayTracerBasicApp::renderScene()
 {
 	if ( !m_sceneFilePath.empty() )
 	{
-		//m_renderedImage			= Surface( m_scene.getWidth(), m_scene.getHeight(), true, SurfaceChannelOrder::RGBA );
-		//m_renderedImageTex		= gl::Texture::create( m_renderedImage );
-
 		m_scene.setOutputFilePath( getAssetPath( "" ) );
-		m_rayTracer.render( m_scene );
 
-		m_rayTracer.getImageCloneThreadSafe( m_renderedImage );
-		m_renderedImageTex			= gl::Texture::create( m_renderedImage );
+		if ( m_useMultithreading )
+		{
+			m_rayTracer.renderThreaded( m_scene );
+		}
+		else
+		{
+			m_rayTracer.render( m_scene );
+		}
 
-		/*rt::Scene scene;
-		rt::RayTracer rayTracer;
-
-		scene.setOutputFilePath( getAssetPath( "" ) );
-		scene.parseSceneFile( m_sceneFilePath.string() );
-		rayTracer.render( scene );*/
+		if ( m_rayTracer.getImageCloneThreadSafe( m_renderedImage ) )
+		{
+			m_renderedImageTex		= gl::Texture::create( m_renderedImage );
+		}
 	}
 	else
 	{
@@ -195,7 +201,17 @@ void RayTracerBasicApp::saveRenderedImage()
 
 void RayTracerBasicApp::update()
 {
-	
+	if ( m_rayTracer.getImageCloneThreadSafe( m_renderedImage ) )
+	{
+		if ( m_renderedImage.getSize() == m_renderedImageTex->getSize() )
+		{
+			m_renderedImageTex->update( m_renderedImage );
+		}
+		else
+		{
+			m_renderedImageTex		= gl::Texture::create( m_renderedImage );
+		}
+	}
 }
 
 void RayTracerBasicApp::setupWindow()

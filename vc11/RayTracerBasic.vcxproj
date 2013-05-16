@@ -112,6 +112,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\RayTracerBasicApp.cpp" />
     <ClCompile Include="..\src\raytracer\Camera.cpp" />
+    <ClCompile Include="..\src\raytracer\Concurrency.cpp" />
     <ClCompile Include="..\src\raytracer\RayTracer.cpp" />
     <ClCompile Include="..\src\raytracer\Scene.cpp" />
     <ClCompile Include="..\src\raytracer\Sphere.cpp" />
@@ -121,6 +122,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\Logger.h" />
     <ClInclude Include="..\include\raytracer\Camera.h" />
+    <ClInclude Include="..\include\raytracer\Concurrency.h" />
     <ClInclude Include="..\include\raytracer\Light.h" />
     <ClInclude Include="..\include\raytracer\Material.h" />
     <ClInclude Include="..\include\raytracer\Primitive.h" />

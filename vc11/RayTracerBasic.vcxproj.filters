@@ -48,6 +48,9 @@
     <ClCompile Include="..\src\raytracer\TriangleMesh.cpp">
       <Filter>Source Files\raytracer</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\raytracer\Concurrency.cpp">
+      <Filter>Source Files\raytracer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="..\include\Logger.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\raytracer\Concurrency.h">
+      <Filter>Header Files\raytracer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
