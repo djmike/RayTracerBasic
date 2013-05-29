@@ -1,3 +1,4 @@
 # Rendered Scene Files
 scene*.png
 geom/
+debug/

@@ -69,7 +69,6 @@ bool Sphere::intersect( const Ray& p_ray, IntersectionData& p_data ) const
 			return false;
 		}
 
-		// Added 04-24-2013: to see if this fixes shit...
 		// calc point of transformed ray in world space
 		ci::Vec3d point		= rayOrigin + rayDirection * t;							// intersection point in object space
 		p_data.point		= ( m_modelToWorld * ci::Vec4d( point, 1.0 ) ).xyz();	// intersection point in world space

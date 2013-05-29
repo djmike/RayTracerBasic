@@ -54,6 +54,7 @@ private:
 	fs::path			m_sceneFilePath;
 	string				m_sceneFileName;
 	InterfaceGlRef		m_guiMain;
+	float				m_pixelX, m_pixelY;
 
 	rt::Scene			m_scene;
 	rt::RayTracer		m_rayTracer;
@@ -78,7 +79,8 @@ void RayTracerBasicApp::setup()
 {
 	console().sync_with_stdio( true );
 
-	m_useMultithreading		= false;
+	m_useMultithreading		= true;
+	m_pixelX				= m_pixelY = 0.0f;
 
 	setupWindow();
 	setupGuiMain();
@@ -107,6 +109,8 @@ void RayTracerBasicApp::setupGuiMain()
 	m_guiMain->addButton( "Render", std::bind( &RayTracerBasicApp::onGuiRenderScene, this ), "group='Scene Management'" );
 	m_guiMain->addParam( "Use Multithreading", &m_useMultithreading, "group='Scene Management'" );
 	m_guiMain->addButton( "Save Image", std::bind( &RayTracerBasicApp::onGuiSaveRenderedImage, this ), "group='Scene Management'" );
+	m_guiMain->addParam( "Pixel X", &m_pixelX, "group='Scene Management'" );
+	m_guiMain->addParam( "Pixel Y", &m_pixelY, "group='Scene Management'" );
 
 	// TODO: add elements for rendering progress
 	// TODO: add elements for displaying pixel info when mouse is over renderer image pixels
@@ -253,6 +257,10 @@ void RayTracerBasicApp::onWindowResize()
 
 void RayTracerBasicApp::onWindowKeyUp( KeyEvent& p_evt )
 {
+	if ( p_evt.getChar() == 'R' && p_evt.isControlDown() && !m_sceneFilePath.empty() )
+	{
+		m_rayTracer.renderDebug( m_scene, m_pixelX, m_pixelY );
+	}
 }
 
 void RayTracerBasicApp::onWindowKeyDown( KeyEvent& p_evt )
@@ -265,6 +273,19 @@ void RayTracerBasicApp::onWindowMouseUp( MouseEvent& p_evt )
 
 void RayTracerBasicApp::onWindowMouseDown( MouseEvent& p_evt )
 {
+	if ( m_renderedImageTex )
+	{
+		Vec2i windowSize	= toPixels( getWindowSize() );
+		int xPos			= windowSize.x / 2 - m_renderedImageTex->getWidth() / 2;
+		int yPos			= windowSize.y / 2 - m_renderedImageTex->getHeight() / 2;
+		Area texArea		= m_renderedImageTex->getCleanBounds().getOffset( Vec2f( xPos, yPos ) );
+
+		if ( texArea.contains( p_evt.getPos() ) )
+		{
+			m_pixelX		= p_evt.getPos().x - xPos;
+			m_pixelY		= p_evt.getPos().y - yPos;
+		}
+	}
 }
 
 void RayTracerBasicApp::onWindowMouseDrag( MouseEvent& p_evt )

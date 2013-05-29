@@ -1,0 +1,102 @@
+# Test Scene 9
+# A simple Cornell-Box-like scene
+
+size 640 480 
+
+camera 0 4 10 0 2 0 0 1 0 45
+#camera 5 5 10 0 0 0 0 1 0 30
+
+#directional 0 0 1 .2 .2 .2 
+point 0 6 0 1 1 1
+#point 0 4 10 0.5 0.5 0.5
+attenuation 1 0 0.0
+
+ambient .2 .2 .2
+specular 0.8 0.8 0.8
+shininess 64
+
+# Front sphere
+pushTransform
+ambient 0.0 0.0 0.0
+diffuse 0.6 0.3 0.0
+specular 0.0 0.0 0.0
+translate 0.7 1.0 1.0
+scale 1.0 1.0 1.0
+sphere 0 0 0 1
+popTransform
+
+# Back sphere
+pushTransform
+ambient 0.0 0.0 0.0
+diffuse 0.0 0.0 0.0
+specular 1.0 1.0 1.0
+shininess 512
+translate -1.4 1.0 -1.0
+scale 1.0 1.0 1.0
+sphere 0 0 0 1
+popTransform
+
+shininess 64
+
+vertex -1.0 -1.0 0.0
+vertex  1.0 -1.0 0.0
+vertex  1.0  1.0 0.0
+vertex -1.0  1.0 0.0
+
+# Floor
+pushTransform
+ambient 0.0 0.0 0.0
+diffuse 1.0 1.0 1.0
+specular 0.0 0.0 0.0
+rotate 1 0 0 -90
+scale 4 4 4
+tri 0 1 2
+tri 0 2 3
+popTransform
+
+# Ceiling
+pushTransform
+ambient 0.0 0.0 0.0
+diffuse 1.0 1.0 1.0
+specular 0.0 0.0 0.0
+rotate 1 0 0 90
+translate 0 0 -8
+scale 4 4 4
+tri 0 1 2
+tri 0 2 3
+popTransform
+
+# Back wall
+pushTransform
+ambient 0.0 0.0 0.0
+diffuse 1.0 1.0 1.0
+specular 0.0 0.0 0.0
+translate 0 4 -4
+scale 4 4 4
+tri 0 1 2
+tri 0 2 3
+popTransform
+
+# Left wall
+pushTransform
+ambient 0.0 0.0 0.0
+diffuse 1.0 0.0 0.0
+specular 0.0 0.0 0.0
+rotate 0 1 0 90
+translate 0 4 -4
+scale 4 4 4
+tri 0 1 2
+tri 0 2 3
+popTransform
+
+# Right wall
+pushTransform
+ambient 0.0 0.0 0.0
+diffuse 0.0 1.0 0.0
+specular 0.0 0.0 0.0
+rotate 0 1 0 -90
+translate 0 4 -4
+scale 4 4 4
+tri 0 1 2
+tri 0 2 3
+popTransform

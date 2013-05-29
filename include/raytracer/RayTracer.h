@@ -4,7 +4,24 @@
 #include "Scene.h"
 #include "cinder/Surface.h"
 
+#include <unordered_map>
+
 namespace raytracer {
+
+class RayMap
+{
+public:
+	void	addRay( const ci::Vec3d& p_originPoint, const ci::Vec3d& p_intersectionPoint );
+	void	dump();
+
+protected:
+	typedef std::vector< ci::Vec3d > OriginPoints;
+	typedef OriginPoints::size_type OriginPointIndex;
+	typedef std::unordered_multimap< OriginPointIndex, ci::Vec3d > IntersectionPoints;
+
+	OriginPoints			m_originPoints;
+	IntersectionPoints 		m_intersectionPoints;
+};
 
 class RayTracer
 {
@@ -19,6 +36,7 @@ public:
 
 	void	render( const Scene& p_scene );
 	void	renderThreaded( const Scene& p_scene );
+	void	renderDebug( const Scene& p_scene, double p_pixelX, double p_pixelY );
 	void	setMaxDepth( uint8_t p_maxDepth ) { m_maxDepth = p_maxDepth; }
 
 	bool	getIsRendering() const { return m_isRendering; }
@@ -35,6 +53,7 @@ protected:
 	friend class RenderTask;
 
 	void	traceRay( const Ray& p_ray, const Scene& p_scene, ci::Vec4d& p_color, int p_depth );
+	void	traceRayDebug( const Ray& p_ray, const Scene& p_scene, RayMap& p_rayMap, int p_depth );
 };
 
 class RenderTask

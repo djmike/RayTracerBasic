@@ -68,6 +68,7 @@ void Scene::parseSceneFile( const std::string& p_fileName )
 	ci::Vec4d specular;
 	ci::Vec4d emissive;
 	double shininess = 1.0;
+	bool refract = false;
 
 	// light properties
 	ci::Vec3d lightPosition;
@@ -156,6 +157,17 @@ void Scene::parseSceneFile( const std::string& p_fileName )
 					if ( readValues( ss, values, 3 ) )
 					{
 						lightAttenuation = ci::Vec3d( values[ 0 ], values[ 1 ], values[ 2 ] );
+					}
+					else
+					{
+						outputErrorMessage( cmd, p_fileName, lineCount );
+					}
+				}
+				else if ( cmd == "refract" )
+				{
+					if ( readValues( ss, values, 1 ) )
+					{
+						refract = ( values[ 0 ] > 0.0f );
 					}
 					else
 					{
@@ -285,6 +297,7 @@ void Scene::parseSceneFile( const std::string& p_fileName )
 						material.setDiffuse( diffuse );
 						material.setSpecular( specular );
 						material.setShininess( shininess );
+						material.setRefract( refract );
 						
 						sphere->setId( lineCount );
 						sphere->setMaterial( material );
@@ -332,6 +345,7 @@ void Scene::parseSceneFile( const std::string& p_fileName )
 						material.setDiffuse( diffuse );
 						material.setSpecular( specular );
 						material.setShininess( shininess );
+						material.setRefract( refract );
 
 						tri->setId( lineCount );
 						tri->setMaterial( material );

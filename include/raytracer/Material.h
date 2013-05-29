@@ -26,12 +26,16 @@ public:
 	const double& getShininess() const { return m_shininess; }
 	void setShininess( double p_shininess ) { m_shininess = p_shininess; }
 
+	const bool getRefract() const { return m_refract; }
+	void setRefract( bool p_refract ) { m_refract = p_refract; }
+
 protected:
 	ci::Vec4d	m_ambient;
 	ci::Vec4d	m_emissive;
 	ci::Vec4d	m_diffuse;
 	ci::Vec4d	m_specular;
 	double		m_shininess;
+	bool		m_refract;
 };
 
 } // namespace raytracer
